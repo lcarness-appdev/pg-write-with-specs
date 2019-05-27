@@ -28,14 +28,14 @@
   
   <dt>Add a new fan</dt>
   <dd>
-    <form>
+    <form action="/add_new_fan">
       <input type="hidden" name="photo_id" value="<%= @pic.id %>">
       
-      <label>
+      <label for="fan_dropdown">
         Person
       </label>
       
-      <select>
+      <select id="fan_dropdown" name="liker_id">
         <% User.all.each do |a_user| %>
           <option value="<%= a_user.id %>">
             <%= a_user.username %>
@@ -83,3 +83,30 @@
   </tr>
   <% end %>
 </table>
+
+
+<h3>Add a new comment</h3>
+  <form action="/add_new_comment">
+    <input type="hidden" name="photo_id" value="<%= @pic.id %>">
+      
+    <label for="commenter_dropdown">
+        Commenter
+    </label>
+    <select id="commenter_dropdown" name="commenter_id">
+      <% User.all.each do |a_user| %>
+        <option value="<%= a_user.id %>">
+          <%= a_user.username %>
+        </option>
+      <% end %>
+    </select>
+    
+    <label for="comment_box">
+      Comment
+    </label>
+    <textarea
+      id="comment_box"
+      name="pic_comment"
+      placeholder="Enter a comment..."></textarea>
+    
+    <button>Add comment</button>
+  </form>

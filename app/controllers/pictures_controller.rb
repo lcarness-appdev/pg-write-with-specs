@@ -59,6 +59,7 @@ class PicturesController < ApplicationController
     render("pic_templates/edit_form.html.erb")
   end
 
+
   def update_row
     
     pic_id = params.fetch("id_to_update")
@@ -72,6 +73,32 @@ class PicturesController < ApplicationController
     
     redirect_to("/photos/" + pic_id)
   end
+
+
+  def add_new_fan
+    
+    p = Like.new
+    p.fan_id = params.fetch("liker_id")
+    p.photo_id = params.fetch("photo_id")
+    
+    p.save
+    
+    redirect_to("/photos/" + p.photo_id.to_s)
+  end
+
+
+  def add_new_comment
+    
+    p = Comment.new
+    p.author_id = params.fetch("commenter_id")
+    p.body = params.fetch("pic_comment")
+    p.photo_id = params.fetch("photo_id")
+    
+    p.save
+    
+    redirect_to("/photos/" + p.photo_id.to_s)
+  end
+
 
 
 end
