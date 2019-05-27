@@ -25,6 +25,39 @@
   <dd>
     <%= @pic.fans.pluck(:username).to_sentence %>
   </dd>
+  
+  <dt>Add a new fan</dt>
+  <dd>
+    <form>
+      <input type="hidden" name="photo_id" value="<%= @pic.id %>">
+      
+      <label>
+        Person
+      </label>
+      
+      <select>
+        <% User.all.each do |a_user| %>
+          <option value="<%= a_user.id %>">
+            <%= a_user.username %>
+          </option>
+        <% end %>
+      </select>
+      
+      <button>Add fan</button>
+    </form>
+  </dd>
+  
+  <dt>Danger zone</dt>
+  <dd>
+    <a href="/existing_photo_form/<%= @pic.id %>">
+      Edit this photo
+    </a>
+  </dd>
+  <dd>
+    <a href="/delete_photo/<%= @pic.id %>">
+      Delete this photo
+    </a>
+  </dd>
 </dl>
 
 <table>
