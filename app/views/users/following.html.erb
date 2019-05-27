@@ -1,0 +1,64 @@
+<h1><%= @user.username %></h1>
+
+<dl>
+  <dt>Followers</dt>
+  <dd>
+    <%= @user.followers.count %>
+  </dd>
+  
+  <dt>Following</dt>
+  <dd>
+    <%= @user.following.count %>
+  </dd>
+</dl>
+
+<nav>
+  <ul>
+    <li><a href="/users/<%= @user.id %>">Own photos</a></li>
+    <li><a href="/users/<%= @user.id %>/liked">Liked photos</a></li>
+    <li><a href="/users/<%= @user.id %>/feed">Feed</a></li>
+    <li><a href="/users/<%= @user.id %>/discover">Discover</a></li>
+    <li><a href="/users/<%= @user.id %>/followers">Followers</a></li>
+    <li><a href="/users/<%= @user.id %>/following">Following</a></li>
+  </ul>
+</nav>
+
+
+<h2>Following (<%= @user.following.count%>)</h2>
+  <ul>
+    <% @user.following.each do |a_user| %>
+    <li><%= a_user.username %></li>
+    <% end %>
+  </ul>
+
+
+<h2>Pending sent requests (<%= @user.pending_sent_follow_requests.count%>)</h2>
+  <ul>
+    <% @user.pending_sent_follow_requests.each do |a_user| %>
+    <li><%= a_user.recipient.username %></li>
+    <% end %>
+  </ul>
+
+<h2>Send follow request</h2>
+<form action="/send_follow_request">
+    <input type="hidden" name="sender_id" value="<%= @user.id %>">
+    <label for="recipient_dropdown">
+        Recipient
+    </label>
+    <select id="recipient_dropdown" name="recipient_id">
+      <% User.all.each do |a_user| %>
+          <% if FollowRequest.where(:recipient_id => a_user.id,:sender_id => @user.id).empty? %>
+            <option value="<%= a_user.id %>">
+              <%= a_user.username %>
+              <% if a_user.private %>
+                (Private)
+                <% else %>
+                (Public)
+                <% end %>
+            </option>
+        <% end %>
+      <% end %>
+    </select>
+    
+    <button>Follow</button>
+</form>

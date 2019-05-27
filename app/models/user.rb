@@ -36,6 +36,12 @@ class User < ApplicationRecord
 
   has_many(:sent_follow_requests, { :class_name => "FollowRequest", :foreign_key => "sender_id" })
 
+  # def pending_sent_follow_requests
+  #   return self.pending_sent_follow_requests.where({ :status => "" })
+  # end
+
+  has_many(:pending_sent_follow_requests, -> { where({ :status => "pending" }) }, { :class_name => "FollowRequest", :foreign_key => "sender_id" })
+  
   # def accepted_sent_follow_requests
   #   return self.sent_follow_requests.where({ :status => "accepted" })
   # end
@@ -48,6 +54,18 @@ class User < ApplicationRecord
 
   has_many(:received_follow_requests, { :class_name => "FollowRequest", :foreign_key => "recipient_id" })
 
+  # def rejected_received_follow_requests
+  #   return self.received_follow_requests.where({ :status => "accepted" })
+  # end
+
+  has_many(:rejected_received_follow_requests, -> { where({ :status => "rejected" }) }, { :class_name => "FollowRequest", :foreign_key => "recipient_id" })
+
+  # def pending_received_follow_requests
+  #   return self.received_follow_requests.where({ :status => "accepted" })
+  # end
+
+  has_many(:pending_received_follow_requests, -> { where({ :status => "pending" }) }, { :class_name => "FollowRequest", :foreign_key => "recipient_id" })
+  
   # def accepted_received_follow_requests
   #   return self.received_follow_requests.where({ :status => "accepted" })
   # end

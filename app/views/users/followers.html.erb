@@ -1,0 +1,109 @@
+<h1><%= @user.username %></h1>
+
+<dl>
+  <dt>Followers</dt>
+  <dd>
+    <%= @user.followers.count %>
+  </dd>
+  
+  <dt>Following</dt>
+  <dd>
+    <%= @user.following.count %>
+  </dd>
+</dl>
+
+<nav>
+  <ul>
+    <li><a href="/users/<%= @user.id %>">Own photos</a></li>
+    <li><a href="/users/<%= @user.id %>/liked">Liked photos</a></li>
+    <li><a href="/users/<%= @user.id %>/feed">Feed</a></li>
+    <li><a href="/users/<%= @user.id %>/discover">Discover</a></li>
+    <li><a href="/users/<%= @user.id %>/followers">Followers</a></li>
+    <li><a href="/users/<%= @user.id %>/following">Following</a></li>
+  </ul>
+</nav>
+
+<h2>Followers (<%= @user.followers.count %>)</h2>
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @user.followers.each do |user| %>
+    <tr>
+      <td>
+        <%= user.username %>
+      </td>
+
+        <td>
+          <form action="/update_reject_follower">
+            <input type="hidden" name="sender_id" value="<%= user.id %>">
+            <input type="hidden" name="recipient_id" value="<%= @user.id %>">
+            <button>Reject</button>
+          </form>
+        </td>
+    </tr>
+  <% end %>
+</table>
+
+
+<h2>Pending received requests (<%= @user.pending_received_follow_requests.count %>)</h2>
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @user.pending_received_follow_requests.each do |user| %>
+    <tr>
+      <td>
+        <%= user.sender.username %>
+      </td>
+
+        <td>
+          <form action="/update_accept_follower">
+            <input type="hidden" name="sender_id" value="<%= user.sender.id %>">
+            <input type="hidden" name="recipient_id" value="<%= @user.id %>">
+            <button>Accept</button>
+          </form>
+        </td>
+
+
+        <td>
+          <form action="/update_reject_follower">
+            <input type="hidden" name="sender_id" value="<%= user.sender.id %>">
+            <input type="hidden" name="recipient_id" value="<%= @user.id %>">
+            <button>Reject</button>
+          </form>
+        </td>
+    </tr>
+  <% end %>
+</table>
+
+
+
+<h2>Rejected received requests (<%= @user.rejected_received_follow_requests.count %>)</h2>
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <%  @user.rejected_received_follow_requests.each do |user| %>
+    <tr>
+        <td>
+        <%= user.sender.username %>
+        </td>
+
+        <td>
+          <form action="/update_accept_follower">
+            <input type="hidden" name="sender_id" value="<%= user.sender.id %>">
+            <input type="hidden" name="recipient_id" value="<%= @user.id %>">
+            <button>Accept</button>
+          </form>
+        </td>
+    </tr>
+  <% end %>
+</table>
